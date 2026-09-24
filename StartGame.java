@@ -6,6 +6,7 @@ public class StartGame{
         String input;
         Scanner scanner = new Scanner(System.in);
         Dicework dicework = new Dicework();
+        int[] meld;
         dicework.randomizeDice();
         if(dicework.isFarkle()){
             dicework.printTable(0);
@@ -18,21 +19,22 @@ public class StartGame{
             System.out.print("Enter letters for your choice(s): ");
             input = scanner.nextLine();
             if(!checkValidInputs(input)){
+                System.out.println("Invalid input, try again."); 
                 continue;
             }
-            dicework.checkMeld(input);
             if(input.equals("K") || input.equals("k") || 
                input.equals("Q") || input.equals("q")){
                 System.out.printf("Round over. Total score is: %s%n",score);
                 break;
             }
             dicework.changeMeld(input);
-            score = dicework.computeScore();
+            meld = dicework.getMeld();
+            score = dicework.computeScore(meld);
         }
         scanner.close();
     }
     public static Boolean checkValidInputs(String input){
-        if(!input.matches("[ABCDEFKQabcdefkq]")){
+        if(!input.matches("[A-Fa-f]+|[KkQq]")){
             return false;
         } else{
             return true;
