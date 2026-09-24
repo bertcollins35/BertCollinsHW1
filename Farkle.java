@@ -3,6 +3,7 @@
  CPSC 224-01 Fall 2026
  Programming Assignment #1
  Sources: crandallFarkle.cpp
+ **Run using java farkle.java**
 
  @author Bert Collins
  @version v2.7 9/23/26
