@@ -4,11 +4,16 @@ public class StartGame{
     public void start(){
         int score = 0;
         String input;
+        String name;
         Scanner scanner = new Scanner(System.in);   //sets up scanner for user to input from command line
         DiceWork dicework = new DiceWork(); //initializes DiceWork, which is the main control class
         int[] meld;     //sets up meld array
-        dicework.randomizeDice();
 
+        System.out.println("Please enter a player name: ");
+        name = scanner.nextLine();
+        System.out.println("Hey " + name + "! Welcome to Farkle!");
+
+        dicework.randomizeDice();
         if(dicework.isFarkle()){
             dicework.printTable(0);     //detects farkle
             System.out.println("OOOOOF you farkled, try again another time");

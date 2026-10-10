@@ -12,6 +12,15 @@
 public class Farkle{
     public static void main(String args[]){
         StartGame start = new StartGame();  //starts game :)
+        printCredentials();
         start.start();
     }
+    
+    public static void printCredentials(){
+        System.out.println("************************************************************************");
+        System.out.println("*                      Zag Farkle by Bert Collins!                     *");
+        System.out.println("************************************************************************");
+    }
 }
+
+
