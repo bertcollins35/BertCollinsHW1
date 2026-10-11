@@ -16,7 +16,7 @@ public class Farkle{
 
                         /* ************************************ */
                         /*         Turn on/off test mode        */
-                                    Boolean test = true;
+                                    Boolean test = false;
                         /* ************************************ */
 
 

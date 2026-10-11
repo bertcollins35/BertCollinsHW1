@@ -13,22 +13,22 @@ public class StartGame{
         int[] meld;     //sets up meld array
 
         System.out.println("Please enter a player name: ");
-        name = scanner.nextLine();
+        name = scanner.nextLine();                          //asks user for name
         System.out.println("Hey " + name + "! Welcome to Farkle!");
 
         if(test){
             TestCases tc = new TestCases();
             int num;
             tc.printTestInfo();
-            input = scanner.nextLine();             //Test cases
+            input = scanner.nextLine();             //Test cases for if turned on in Farkle.java
             num = Integer.parseInt(input);
             tc.selectTest(num, name, dicework);
         }else{
             dicework.randomizeDice();
         }
         
-        if(dicework.isFarkle()){
-                dicework.printTable(0);     //detects first farkle
+        if(dicework.isFarkle(0)){
+                dicework.printTable(0);     //detects farkle after the first roll
                 System.out.println("OOOOOF you farkled, try again another time");
                 System.out.println("Your score is: 0");
                 scanner.close();
@@ -37,7 +37,7 @@ public class StartGame{
 
         while (true){       //always looping unless user quits
 
-            if(reRoll && dicework.isFarkle()){
+            if(reRoll && dicework.isFarkle(score)){
                 dicework.printTable(0);     //detects any farkle after a reroll
                 System.out.println("OOOOOF you farkled, try again another time");
                 System.out.println("Your score is: 0");
@@ -46,28 +46,29 @@ public class StartGame{
             }
             reRoll = false;
             if(dicework.isHotHand()){
-                System.out.println("***** HOT HAND! ****");
+                System.out.println("***** HOT HAND! ****");     //Checks for a hot hand and true if occurs
                 System.out.println("Would you like to roll 6 new dice, or bank and end your turn?");    
                 System.out.println("************************");
                 hotHand = true;
             }
 
             dicework.printTable(score);
-            System.out.print("Enter letters for your choice(s): ");
+            System.out.print(name + ", Enter letters of your choice: ");    
             input = scanner.nextLine(); 
             if(!checkValidInputs(input)){
                 System.out.println("Invalid input, try again."); //Checks so that user doesn't input anything
                 continue;                                           //they arent supposed to be inputting
             }
             
-            if(input.equals("R") || input.equals("r")){
+            if(input.equals("R") || input.equals("r")){ //new reroll option
                 if(hotHand){
-                    meld = dicework.getMeld();
+                    meld = dicework.getMeld();             
                     hotHandScore = dicework.computeScore(meld) + hotHandScore;
-                    dicework.clearMeld();
+                    dicework.clearMeld();               //clears meld and randomizes dice while keeping score
                     dicework.randomizeDice();
+                    hotHand = false;
                 }
-                dicework.rerollDice();
+                dicework.rerollDice();      //rerolls dice
                 reRoll = true;
             }
 

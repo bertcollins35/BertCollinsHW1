@@ -7,12 +7,26 @@ public class DiceWork{
     private final int[] dices = new int[6];         //dice and meld arrays
     private final int[] meld = {0,0,0,0,0,0};
 
-    public Boolean isFarkle(){
-        return this.computeScore(this.dices) == 0;      //Farkles if the overall score ends up being 0
+    public Boolean isFarkle(int score){
+        int[] meldAndDiceCombined = {0,0,0,0,0,0,};
+        int finalScore;
+        for(int i = 0; i < 6; i++){         //combines meld and dice in order to determine a farkle
+            if(this.dices[i] != 0){
+                meldAndDiceCombined[i] = this.dices[i];
+            }
+        }
+         for(int i = 0; i < 6; i++){
+            if(this.meld[i] != 0){
+                meldAndDiceCombined[i] = this.meld[i];
+            }
+        }
+        finalScore = this.computeScore(meldAndDiceCombined);
+        finalScore -= score;    //subtracts original score to factor in score from meld
+        return finalScore == 0;     
     }
 
-    public Boolean isHotHand(){
-        Boolean[] checks = {false,false,false,false,false,false};
+    public Boolean isHotHand(){ //checks for a hot hand. Similar logic to this.computerScore()
+        Boolean[] checks = {false,false,false,false,false,false};   //uses checks to check each number in meld hand
         int[] meldClone = {0,0,0,0,0,0};
         Boolean keepGoing = false;
         for(int i = 0; i < 6; i++){
@@ -107,7 +121,7 @@ public class DiceWork{
         int[] possibledices = {1,2,3,4,5,6};
         int randomIndex;
         Random random = new Random();
-
+                                            //rerolls dice by rolling remaining dice not in meld
         for(int i = 0; i < 6; i++){                            
             if(this.meld[i] != 0){
                 continue;
@@ -357,7 +371,7 @@ public class DiceWork{
         this.dices[0] = one;
         this.dices[1] = two;
         this.dices[2] = three;
-        this.dices[3] = four;
+        this.dices[3] = four;       //for testing purposes
         this.dices[4] = five;
         this.dices[5] = six;
     }
