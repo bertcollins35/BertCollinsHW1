@@ -10,6 +10,88 @@ public class DiceWork{
     public Boolean isFarkle(){
         return this.computeScore(this.dices) == 0;      //Farkles if the overall score ends up being 0
     }
+
+    public Boolean isHotHand(){
+        Boolean[] checks = {false,false,false,false,false,false};
+        int[] meldClone = {0,0,0,0,0,0};
+        Boolean keepGoing = false;
+        for(int i = 0; i < 6; i++){
+            if(this.meld[i] == 0){
+                return false;
+            }
+            meldClone[i] = this.meld[i];
+        }
+        Arrays.sort(meldClone);
+
+         for(int i = 0; i < 6; i++){
+            if(meldClone[i] != (i+1)){
+                keepGoing = false;        
+                break;
+            }                           
+            keepGoing = true;               //If hot hand is a straight flush
+        }
+        if(keepGoing){
+            return keepGoing;
+        }
+
+
+        keepGoing = false;
+        for(int i = 0; i < 6; i += 2){                                
+            if(meldClone[i] != meldClone[i+1] || meldClone[i] == 0){
+                keepGoing = false;                 
+                break;
+            }
+            if(i > 0 && meldClone[i] == meldClone[i-2]){          //If hot hand is three pairs    
+                keepGoing = false;
+                break;
+            }
+            keepGoing = true;
+        }                                                              
+        if(keepGoing){      
+            return keepGoing;
+        }
+
+        int idx = 0;
+        int tripleNum1 = 0;
+        int tripleNum2 = 0;
+        for(int i = 1; i <= 7; i++){
+            for(int j = 0; j < 6; j++){
+                if(meldClone[j] == i){
+                    idx++;
+                }
+                if(idx >= 3 && tripleNum1 == 0){        //check for triple instances or more
+                    tripleNum1 = i;
+                    break;
+                }
+                if(idx >= 3){
+                    tripleNum2 = i;
+                    break;
+                }
+            }
+            idx = 0;
+        }
+        
+        for(int i = 0; i < 6; i++){
+            if(meldClone[i] == tripleNum1 || meldClone[i] == tripleNum2){   //puts check in place for each duplicate number over 3 detected
+                checks[i] = true;
+            }
+        }
+
+        for(int i = 0; i < 6; i++){
+            if(meldClone[i] == 1 || meldClone[i] == 5){     //Checks for any remaining 1 or 5's 
+                checks[i] = true;
+            }
+        }
+        
+
+        for(int i = 0; i < 6; i++){
+            if(checks[i] == false){
+                return false;           //If all checks end up being true. Return true (its a hot hand), if not then return false
+            }
+        }
+        return true;
+    }
+
     public void randomizeDice(){
         int[] possibledices = {1,2,3,4,5,6};
         int randomIndex;
@@ -21,55 +103,88 @@ public class DiceWork{
         }
     }
 
+    public void rerollDice(){
+        int[] possibledices = {1,2,3,4,5,6};
+        int randomIndex;
+        Random random = new Random();
+
+        for(int i = 0; i < 6; i++){                            
+            if(this.meld[i] != 0){
+                continue;
+            }else{
+                  randomIndex = random.nextInt(possibledices.length);
+                  this.dices[i] = possibledices[randomIndex];
+            }
+        }
+    }
+
         //Changes meld based on what the user inputed. Also makes sure user 
         //is able to put meld back to change score
         public void changeMeld(String meldLetter){
         if(meldLetter.contains("A") || meldLetter.contains("a")){      
             if(this.meld[0] != 0){
+                this.dices[0] = this.meld[0]; 
                 this.meld[0] = 0;
             } else {
                 this.meld[0] = this.dices[0];
+                this.dices[0] = 0;
             }
         }
         if(meldLetter.contains("B") || meldLetter.contains("b")){     
             if(this.meld[1] != 0){
+                this.dices[1] = this.meld[1]; 
                 this.meld[1] = 0;
             } else {
                 this.meld[1] = this.dices[1];
+                this.dices[1] = 0;
             }
         }
         if(meldLetter.contains("C") || meldLetter.contains("c")){      
             if(this.meld[2] != 0){
+                this.dices[2] = this.meld[2]; 
                 this.meld[2] = 0;
             } else {
                 this.meld[2] = this.dices[2];
+                this.dices[2] = 0;
             }
         }
         if(meldLetter.contains("D") || meldLetter.contains("d")){    
             if(this.meld[3] != 0){
+                this.dices[3] = this.meld[3]; 
                 this.meld[3] = 0;
             } else {
                 this.meld[3] = this.dices[3];
+                this.dices[3] = 0;
             }
         }
         if(meldLetter.contains("E") || meldLetter.contains("e")){      
             if(this.meld[4] != 0){
+                this.dices[4] = this.meld[4]; 
                 this.meld[4] = 0;
             } else {
                 this.meld[4] = this.dices[4];
+                this.dices[4] = 0;
             }
         }
         if(meldLetter.contains("F") || meldLetter.contains("f")){    
             if(this.meld[5] != 0){
+                this.dices[5] = this.meld[5]; 
                 this.meld[5] = 0;
             } else {
                 this.meld[5] = this.dices[5];
+                this.dices[5] = 0;
             }
         }
     }
 
     public int[] getMeld(){
         return this.meld;   //Lets the user get the meld info by returning private member variable
+    }
+
+    public void clearMeld(){
+        for(int i = 0; i < 6; i++){
+            this.meld[i] = 0;
+        }
     }
 
     //prints table using the Aaron crandall printing style in his version of Farkle
@@ -104,6 +219,7 @@ public class DiceWork{
 
         System.out.println(" (K) BanK Meld & End Round");
         System.out.println(" (Q) Quit game");
+        System.out.println(" (R) Reroll");
         System.out.println();
         System.out.printf("Score is: %s%n", score);
         System.out.println();
@@ -235,5 +351,14 @@ public class DiceWork{
         }
 
         return score;       //return the final score!!!!! (finally)
+    }
+
+    public void changeDice(int one, int two, int three, int four, int five, int six){
+        this.dices[0] = one;
+        this.dices[1] = two;
+        this.dices[2] = three;
+        this.dices[3] = four;
+        this.dices[4] = five;
+        this.dices[5] = six;
     }
 }

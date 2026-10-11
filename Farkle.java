@@ -11,11 +11,22 @@
 */
 public class Farkle{
     public static void main(String args[]){
+
+
+
+                        /* ************************************ */
+                        /*         Turn on/off test mode        */
+                                    Boolean test = true;
+                        /* ************************************ */
+
+
+
+
         StartGame start = new StartGame();  //starts game :)
         printCredentials();
-        start.start();
+        start.start(test);
     }
-    
+
     public static void printCredentials(){
         System.out.println("************************************************************************");
         System.out.println("*                      Zag Farkle by Bert Collins!                     *");
