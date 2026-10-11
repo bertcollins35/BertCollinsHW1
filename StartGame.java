@@ -45,6 +45,7 @@ public class StartGame{
                 return;
             }
             reRoll = false;
+            hotHand = false;
             if(dicework.isHotHand()){
                 System.out.println("***** HOT HAND! ****");     //Checks for a hot hand and true if occurs
                 System.out.println("Would you like to roll 6 new dice, or bank and end your turn?");    
