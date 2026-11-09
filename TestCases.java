@@ -12,10 +12,11 @@ public class TestCases{
         System.out.println("2. 2,6,3,2,4,3 (Farkle)");
         System.out.println("3. 3,3,3,4,6,6 (Triple 3's)");
         System.out.println("4. 1,6,3,2,4,3 (Single 1)");
+        System.out.println("5. 2,2,2,6,6,3 (Full House)");
 
         System.out.println();
         System.out.println("Other tests");
-        System.out.println("5. Print players name");
+        System.out.println("6. Print players name");
     }
     public void selectTest(int num, String name, DiceWork dicework){
         switch(num){
@@ -32,6 +33,9 @@ public class TestCases{
                 dicework.changeDice(1,6,3,2,4,3);
                 break;
             case 5:
+                dicework.changeDice(2, 2, 2, 6, 6, 3);
+                break;
+            case 6:
                 System.out.println("Testing name that was set properly: " + name);
                 dicework.randomizeDice();
                 break;

@@ -1,4 +1,6 @@
 import java.util.Arrays;        //Libs used for array work and random number generation
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class DiceWork{
@@ -8,23 +10,8 @@ public class DiceWork{
     private final int[] meld = {0,0,0,0,0,0};
 
     public Boolean isFarkle(int score){
-        int[] meldAndDiceCombined = {0,0,0,0,0,0,};
-        int finalScore;
-        for(int i = 0; i < 6; i++){         //combines meld and dice in order to determine a farkle
-            if(this.dices[i] != 0){
-                meldAndDiceCombined[i] = this.dices[i];
-            }
-        }
-         for(int i = 0; i < 6; i++){
-            if(this.meld[i] != 0){
-                meldAndDiceCombined[i] = this.meld[i];
-            }
-        }
-        finalScore = this.computeScore(meldAndDiceCombined);
-        finalScore -= score;    //subtracts original score to factor in score from meld
-        return finalScore == 0;     
-    }
-
+    return this.computeScore(this.dices) == 0; 
+}
     public Boolean isHotHand(){ //checks for a hot hand. Similar logic to this.computerScore()
         Boolean[] checks = {false,false,false,false,false,false};   //uses checks to check each number in meld hand
         int[] meldClone = {0,0,0,0,0,0};
@@ -85,8 +72,9 @@ public class DiceWork{
             idx = 0;
         }
         
+        int fullHousePair = checkFullHouse(meldClone);
         for(int i = 0; i < 6; i++){
-            if(meldClone[i] == tripleNum1 || meldClone[i] == tripleNum2){   //puts check in place for each duplicate number over 3 detected
+            if(meldClone[i] == tripleNum1 || meldClone[i] == tripleNum2 || meldClone[i] == fullHousePair){    // CHANGED: also marks a full house's pair
                 checks[i] = true;
             }
         }
@@ -286,6 +274,7 @@ public class DiceWork{
         Boolean keepGoing = false;      //and not mess up memory addresses
         int score = 0;
 
+
         for(int i = 0; i < 6; i++){
             meldClone[i] = meld[i];     //copy from meld
         }
@@ -341,6 +330,11 @@ public class DiceWork{
             }
        }
 
+        int fullHousePair = checkFullHouse(meld);  
+        if (fullHousePair != 0){                   
+            score = 1500;
+        }
+
         boolean onesTripled = false;                                   
         boolean fivesTripled = false;           //check ones or fives have been triples                      
         for(int i = 0; i < 2; i++){
@@ -350,6 +344,13 @@ public class DiceWork{
             if(listDuplicates[i][0] == 5){
                 fivesTripled = true;                                  
             }
+        }
+
+        if(fullHousePair == 1){
+            onesTripled = true;    
+        }
+        if(fullHousePair == 5){
+            fivesTripled = true;   
         }
 
         for(int i = 0; i < 6; i++){
@@ -374,5 +375,36 @@ public class DiceWork{
         this.dices[3] = four;       //for testing purposes
         this.dices[4] = five;
         this.dices[5] = six;
+    }
+
+        public int checkFullHouse(int[] meld){  
+        List<Integer> list = Arrays.stream(meld).boxed().toList(); //Convert to a list
+        int triple = 0;
+        int dobl = 0;
+
+
+        for(int n : list){
+            if(n != 0 && Collections.frequency(list, n) == 3){
+                triple = n;
+            }
+        }
+
+        if(triple == 0){return 0;}    
+
+        int[] arr = list.stream().mapToInt(Integer::intValue).toArray();
+        int[] arr2 = {0,0,0,0,0,0};
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] != triple){
+                arr2[i] = arr[i];
+            }
+        }
+        list = Arrays.stream(arr2).boxed().toList();
+        for (int n : list){
+            if(n != 0 && Collections.frequency(list, n) == 2 ){
+                dobl = n;
+            }
+        }
+
+        return dobl;      
     }
 }
